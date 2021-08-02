@@ -88,31 +88,37 @@ int main() {
 
     //display message
     char buf[4096];
+    string userinput;
 
+    int bytes;
     while(true) {
 
         //clear buffer
         memset(buf, 0, 4096);
 
         //wait for a message
-        int bytesrecv= recv(clientsocket, buf, 4096, 0);
-        if (bytesrecv == -1) {
-
+        bytes= recv(clientsocket, buf, 4096, 0);
+        if (bytes < 0) {
             cout<< "there was a connection issue"<<endl;
             break;
-
-        }
-
-        if (bytesrecv==0){
-
+        } else if (bytes==0){
             cout<<"The client disconnected"<< endl;
             break;
         }
         
-
         //display
-        cout<<"\033[1;32m"<< "Recieved: " <<"\033[1;31m"<< string(buf, 0, bytesrecv)<<endl;
+        cout<<"\033[1;32m"<< "Recieved: " <<"\033[1;31m"<< buf <<endl;
 
+//	bytes = send(clientsocket, buf, bytes, 0 );
+
+      //enter text get entire line
+      cout<<" >: ";
+      getline(cin, userinput);
+
+      //send to server
+      bytes = send(clientsocket, userinput.c_str(), userinput.size()+1, 0);
+
+	
 
     }
 
